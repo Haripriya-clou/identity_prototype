@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main Background Circle -->
+  <circle cx="96" cy="96" r="96" fill="url(#grad)"/>
+  
+  <!-- Shield Background -->
+  <path d="M96 40L130 55V100C130 130 96 155 96 155C96 155 62 130 62 100V55L96 40Z" 
+        fill="rgba(255,255,255,0.2)" 
+        stroke="rgba(255,255,255,0.3)" 
+        stroke-width="2"/>
+  
+  <!-- Checkmark Icon (Security Symbol) -->
+  <g transform="translate(96, 100)">
+    <!-- Circle background for checkmark -->
+    <circle cx="0" cy="0" r="35" fill="rgba(16,185,129,0.3)" stroke="rgba(16,185,129,0.6)" stroke-width="2"/>
+    
+    <!-- Checkmark -->
+    <path d="M -15 5 L -5 15 L 20 -10" 
+          stroke="white" 
+          stroke-width="5" 
+          fill="none" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Border Ring -->
+  <circle cx="96" cy="96" r="91" fill="none" 
+          stroke="rgba(255,255,255,0.4)" 
+          stroke-width="2"/>
+</svg>
