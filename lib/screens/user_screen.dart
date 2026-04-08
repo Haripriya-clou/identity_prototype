@@ -150,26 +150,23 @@ class UserScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.person,
             title: 'Full Name',
             description: data['name'] ?? 'N/A',
-            iconColor: AppTheme.primary,
+            accentColor: AppTheme.primary,
           ),
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.badge,
             title: '${data['idType'] ?? 'ID'} Number',
             description: data['idNumber'] ?? 'N/A',
-            iconColor: AppTheme.secondary,
+            accentColor: AppTheme.secondary,
           ),
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.verified,
             title: 'Verification Status',
             description: 'Valid and Verified',
-            iconColor: AppTheme.success,
+            accentColor: AppTheme.success,
           ),
 
           const SizedBox(height: 28),
@@ -178,15 +175,14 @@ class UserScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton.icon(
+                child: OutlinedButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('Back'),
+                  child: const Text('Back'),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: FilledButton.icon(
+                child: FilledButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -195,8 +191,7 @@ class UserScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.check_circle),
-                  label: const Text('Verify'),
+                  child: const Text('Verify'),
                 ),
               ),
             ],

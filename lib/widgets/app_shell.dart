@@ -30,18 +30,11 @@ class AppShell extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: (showBackButton && Navigator.canPop(context))
-            ? GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+            ? TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Back',
+                  style: TextStyle(color: Colors.white),
                 ),
               )
             : null,

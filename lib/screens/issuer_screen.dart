@@ -177,7 +177,6 @@ class _IssuerScreenState extends State<IssuerScreen> {
                   label: "Full Name",
                   controller: name,
                   hintText: "Enter user's full name",
-                  prefixIcon: Icons.person,
                   keyboardType: TextInputType.text,
                 ),
 
@@ -188,7 +187,6 @@ class _IssuerScreenState extends State<IssuerScreen> {
                   value: type,
                   decoration: InputDecoration(
                     labelText: "ID Type",
-                    prefixIcon: const Icon(Icons.category),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -213,7 +211,6 @@ class _IssuerScreenState extends State<IssuerScreen> {
                       : type == "PAN"
                           ? "PAN format"
                           : "16-digit number",
-                  prefixIcon: Icons.badge,
                   keyboardType: TextInputType.text,
                 ),
 
@@ -226,7 +223,6 @@ class _IssuerScreenState extends State<IssuerScreen> {
                     label: "Add User",
                     onPressed: add,
                     isLoading: isLoading,
-                    icon: Icons.person_add,
                   ),
                 ),
               ],
@@ -240,7 +236,7 @@ class _IssuerScreenState extends State<IssuerScreen> {
             title: 'Users List',
             subtitle: 'All registered credentials',
             onActionPressed: syncFirebase,
-            actionIcon: Icons.refresh,
+            actionLabel: 'Refresh',
           ),
 
           const SizedBox(height: 12),
@@ -252,11 +248,6 @@ class _IssuerScreenState extends State<IssuerScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Column(
                       children: [
-                        Icon(
-                          Icons.people_outline,
-                          size: 64,
-                          color: AppTheme.textSecondary.withOpacity(0.3),
-                        ),
                         const SizedBox(height: 16),
                         Text(
                           'No users yet',

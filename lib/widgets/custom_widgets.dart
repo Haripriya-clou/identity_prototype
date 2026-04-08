@@ -5,18 +5,14 @@ import '../theme/app_theme.dart';
 class ModernCard extends StatelessWidget {
   final String title;
   final String? subtitle;
-  final IconData icon;
   final VoidCallback onTap;
-  final Color? iconColor;
   final LinearGradient? gradient;
 
   const ModernCard({
     super.key,
     required this.title,
-    required this.icon,
     required this.onTap,
     this.subtitle,
-    this.iconColor,
     this.gradient,
   });
 
@@ -47,15 +43,11 @@ class ModernCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    height: 4,
+                    width: 64,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      icon,
-                      size: 32,
-                      color: Colors.white,
+                      color: Colors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -124,7 +116,6 @@ class BeautifulButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final bool isLoading;
-  final IconData? icon;
   final Color? backgroundColor;
   final bool isOutlined;
 
@@ -133,45 +124,35 @@ class BeautifulButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.isLoading = false,
-    this.icon,
     this.backgroundColor,
     this.isOutlined = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final buttonChild = isLoading
+        ? SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                isOutlined ? AppTheme.primary : Colors.white,
+              ),
+            ),
+          )
+        : Text(label);
+
     if (isOutlined) {
-      return OutlinedButton.icon(
+      return OutlinedButton(
         onPressed: isLoading ? null : onPressed,
-        icon: isLoading
-            ? SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppTheme.primary,
-                  ),
-                ),
-              )
-            : Icon(icon ?? Icons.check),
-        label: Text(label),
+        child: buttonChild,
       );
     }
 
-    return FilledButton.icon(
+    return FilledButton(
       onPressed: isLoading ? null : onPressed,
-      icon: isLoading
-          ? SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            )
-          : Icon(icon ?? Icons.check),
-      label: Text(label),
+      child: buttonChild,
     );
   }
 }
@@ -181,9 +162,6 @@ class BeautifulTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final String? hintText;
-  final IconData? prefixIcon;
-  final IconData? suffixIcon;
-  final VoidCallback? onSuffixTap;
   final int maxLines;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
@@ -193,9 +171,6 @@ class BeautifulTextField extends StatelessWidget {
     required this.label,
     required this.controller,
     this.hintText,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.onSuffixTap,
     this.maxLines = 1,
     this.keyboardType = TextInputType.text,
     this.validator,
@@ -211,13 +186,6 @@ class BeautifulTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-        suffixIcon: suffixIcon != null
-            ? GestureDetector(
-                onTap: onSuffixTap,
-                child: Icon(suffixIcon),
-              )
-            : null,
       ),
     );
   }
@@ -228,14 +196,14 @@ class SectionHeader extends StatelessWidget {
   final String title;
   final String? subtitle;
   final VoidCallback? onActionPressed;
-  final IconData? actionIcon;
+  final String? actionLabel;
 
   const SectionHeader({
     super.key,
     required this.title,
     this.subtitle,
     this.onActionPressed,
-    this.actionIcon,
+    this.actionLabel,
   });
 
   @override
@@ -263,10 +231,10 @@ class SectionHeader extends StatelessWidget {
               ],
             ],
           ),
-          if (onActionPressed != null && actionIcon != null)
-            IconButton(
+          if (onActionPressed != null)
+            TextButton(
               onPressed: onActionPressed,
-              icon: Icon(actionIcon, color: AppTheme.primary),
+              child: Text(actionLabel ?? 'Refresh'),
             ),
         ],
       ),
@@ -279,14 +247,12 @@ class StatusBadge extends StatelessWidget {
   final String label;
   final Color backgroundColor;
   final Color textColor;
-  final IconData? icon;
 
   const StatusBadge({
     super.key,
     required this.label,
     required this.backgroundColor,
     required this.textColor,
-    this.icon,
   });
 
   @override
@@ -304,10 +270,6 @@ class StatusBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[
-            Icon(icon, size: 14, color: textColor),
-            const SizedBox(width: 4),
-          ],
           Text(
             label,
             style: TextStyle( 
@@ -322,19 +284,17 @@ class StatusBadge extends StatelessWidget {
   }
 }
 
-// 🎯 Info Card with Icon
+// 🎯 Info Card
 class InfoCard extends StatelessWidget {
-  final IconData icon;
   final String title;
   final String description;
-  final Color? iconColor;
+  final Color? accentColor;
 
   const InfoCard({
     super.key,
-    required this.icon,
     required this.title,
     required this.description,
-    this.iconColor,
+    this.accentColor,
   });
 
   @override
@@ -342,45 +302,26 @@ class InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: (iconColor ?? AppTheme.primary).withOpacity(0.1),
+        color: (accentColor ?? AppTheme.primary).withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: (iconColor ?? AppTheme.primary).withOpacity(0.3),
+          color: (accentColor ?? AppTheme.primary).withOpacity(0.3),
           width: 1,
         ),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: (iconColor ?? AppTheme.primary).withOpacity(0.2),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: iconColor ?? AppTheme.primary,
-              size: 24,
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
+          const SizedBox(height: 4),
+          Text(
+            description,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

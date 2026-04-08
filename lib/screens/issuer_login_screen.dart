@@ -127,7 +127,6 @@ class _IssuerLoginScreenState extends State<IssuerLoginScreen> {
                   label: "Email Address",
                   controller: email,
                   hintText: "admin@identity.com",
-                  prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
 
@@ -140,11 +139,14 @@ class _IssuerLoginScreenState extends State<IssuerLoginScreen> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "Enter your password",
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: GestureDetector(
+                    suffix: GestureDetector(
                       onTap: () => setState(() => showPassword = !showPassword),
-                      child: Icon(
-                        showPassword ? Icons.visibility : Icons.visibility_off,
+                      child: Text(
+                        showPassword ? 'Hide' : 'Show',
+                        style: TextStyle(
+                          color: AppTheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -159,7 +161,6 @@ class _IssuerLoginScreenState extends State<IssuerLoginScreen> {
                     label: "Sign In",
                     onPressed: login,
                     isLoading: isLoading,
-                    icon: Icons.login,
                   ),
                 ),
               ],
@@ -182,23 +183,13 @@ class _IssuerLoginScreenState extends State<IssuerLoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.security,
-                      color: AppTheme.secondary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Security Notice',
-                      style: TextStyle( 
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.secondary,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Security Notice',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.secondary,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -222,26 +213,23 @@ class _IssuerLoginScreenState extends State<IssuerLoginScreen> {
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.people,
             title: 'User Management',
             description: 'Add and manage user credentials',
-            iconColor: AppTheme.primary,
+            accentColor: AppTheme.primary,
           ),
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.qr_code,
             title: 'QR Generation',
             description: 'Generate unique verification QR codes',
-            iconColor: AppTheme.secondary,
+            accentColor: AppTheme.secondary,
           ),
           const SizedBox(height: 12),
 
           InfoCard(
-            icon: Icons.storage,
             title: 'Data Sync',
             description: 'Automatic Firebase synchronization',
-            iconColor: AppTheme.warning,
+            accentColor: AppTheme.warning,
           ),
         ],
       ),

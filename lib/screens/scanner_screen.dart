@@ -98,25 +98,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         width: 1,
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.verified_user,
-                          color: AppTheme.success,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'This credential is verified and valid',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.success,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'This credential is verified and valid',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.success,
+                      ),
                     ),
                   ),
                 ],
@@ -175,25 +163,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 width: 1,
               ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.info,
-                  color: AppTheme.warning,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Point camera at QR code to verify',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppTheme.text,
-                    ),
-                  ),
-                ),
-              ],
+            child: Text(
+              'Point camera at QR code to verify',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppTheme.text,
+              ),
             ),
           ),
 
@@ -233,11 +209,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.videocam_off,
-                            size: 48,
-                            color: AppTheme.error,
-                          ),
                           const SizedBox(height: 12),
                           const Text(
                             'Camera unavailable',
@@ -274,25 +245,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 width: 1,
               ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.lightbulb,
-                  color: AppTheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Ensure good lighting and steady hand for accurate scanning',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppTheme.text,
-                    ),
-                  ),
-                ),
-              ],
+            child: Text(
+              'Ensure good lighting and steady hand for accurate scanning',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppTheme.text,
+              ),
             ),
           ),
         ],

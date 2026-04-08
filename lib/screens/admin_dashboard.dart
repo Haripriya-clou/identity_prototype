@@ -136,11 +136,6 @@ class AdminDashboard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 48),
                             child: Column(
                               children: [
-                                Icon(
-                                  Icons.people_outline,
-                                  size: 64,
-                                  color: AppTheme.textSecondary.withOpacity(0.3),
-                                ),
                                 const SizedBox(height: 16),
                                 Text(
                                   'No users yet',
@@ -219,8 +214,7 @@ class AdminDashboard extends StatelessWidget {
                 ],
               ),
             );
-          );
-        },
+          },
       ),
     );
   }

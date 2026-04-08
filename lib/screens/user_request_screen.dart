@@ -77,41 +77,23 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                 width: 1,
               ),
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.info,
+                Text(
+                  'Verify User Identity',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                     color: AppTheme.primary,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Verify User Identity',
-                        style: TextStyle( 
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.primary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Enter the user details to retrieve their verification QR code',
-                        style: TextStyle( 
-                          fontSize: 12,
-                          color: AppTheme.textSecondary,
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 4),
+                Text(
+                  'Enter the user details to retrieve their verification QR code',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.textSecondary,
                   ),
                 ),
               ],
@@ -145,7 +127,6 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                   value: selectedType,
                   decoration: InputDecoration(
                     labelText: "ID Type",
-                    prefixIcon: const Icon(Icons.category),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -171,25 +152,13 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                     color: AppTheme.secondary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.tips_and_updates,
-                        size: 18,
-                        color: AppTheme.secondary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          getRule(),
-                          style: TextStyle( 
-                            fontSize: 12,
-                            color: AppTheme.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    getRule(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.secondary,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
 
@@ -200,7 +169,6 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                   label: "$selectedType Number",
                   controller: idController,
                   hintText: getPlaceholder(),
-                  prefixIcon: Icons.badge,
                   keyboardType: TextInputType.text,
                 ),
 
@@ -213,7 +181,6 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                     label: "Get Verification QR",
                     onPressed: fetchUser,
                     isLoading: isLoading,
-                    icon: Icons.qr_code,
                   ),
                 ),
               ],
@@ -228,17 +195,15 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
           ),
           const SizedBox(height: 12),
           InfoCard(
-            icon: Icons.description,
             title: 'Enter Details',
             description: 'Provide correct ID details to search',
-            iconColor: AppTheme.primary,
+            accentColor: AppTheme.primary,
           ),
           const SizedBox(height: 12),
           InfoCard(
-            icon: Icons.verified,
             title: 'Get QR Code',
             description: 'Receive unique verification QR',
-            iconColor: AppTheme.success,
+            accentColor: AppTheme.success,
           ),
         ],
       ),

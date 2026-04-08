@@ -98,26 +98,23 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 InfoCard(
-                  icon: Icons.security,
                   title: 'Secure',
                   description: 'End-to-end encrypted verification',
-                  iconColor: AppTheme.success,
+                  accentColor: AppTheme.success,
                 ),
                 const SizedBox(height: 12),
 
                 InfoCard(
-                  icon: Icons.speed,
                   title: 'Fast',
                   description: 'Real-time verification results',
-                  iconColor: AppTheme.primary,
+                  accentColor: AppTheme.primary,
                 ),
                 const SizedBox(height: 12),
 
                 InfoCard(
-                  icon: Icons.check_circle,
                   title: 'Reliable',
                   description: 'Multi-layer authentication checks',
-                  iconColor: AppTheme.warning,
+                  accentColor: AppTheme.warning,
                 ),
               ],
             ),
