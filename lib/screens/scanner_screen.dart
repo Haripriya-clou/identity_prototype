@@ -17,11 +17,20 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void initState() {
     super.initState();
-    controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.noDuplicates,
-      facing: CameraFacing.back,
-      formats: [BarcodeFormat.qrCode],
-    );
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    try {
+      controller = MobileScannerController(
+        detectionSpeed: DetectionSpeed.noDuplicates,
+        facing: CameraFacing.back,
+        formats: [BarcodeFormat.qrCode],
+        autoStart: true,
+      );
+    } catch (e) {
+      print('Camera initialization error: $e');
+    }
   }
 
   @override
@@ -39,7 +48,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
       builder: (_) => AlertDialog(
         title: Text(
           data != null ? "✓ Verification Valid" : "⚠ Invalid QR Code",
-          style: TextStyle( 
+          style: TextStyle(
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             color: data != null ? AppTheme.success : AppTheme.error,
           ),
@@ -51,16 +61,18 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 children: [
                   Text(
                     'No matching record found in the database.',
-                    style: TextStyle( 
+                    style: TextStyle(
                       fontSize: 14,
+                      fontWeight: FontWeight.w500,
                       color: AppTheme.text,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'Please verify the QR code and try again.',
-                    style: TextStyle( 
+                    style: TextStyle(
                       fontSize: 12,
+                      fontWeight: FontWeight.w400,
                       color: AppTheme.textSecondary,
                     ),
                   ),
@@ -97,7 +109,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         Expanded(
                           child: Text(
                             'This credential is verified and valid',
-                            style: TextStyle( 
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.success,
@@ -125,7 +137,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
       children: [
         Text(
           label,
-          style: TextStyle( 
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: AppTheme.textSecondary,
@@ -134,7 +146,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
         const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle( 
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: AppTheme.text,
@@ -174,7 +186,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 Expanded(
                   child: Text(
                     'Point camera at QR code to verify',
-                    style: TextStyle( 
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: AppTheme.text,
@@ -273,8 +285,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 Expanded(
                   child: Text(
                     'Ensure good lighting and steady hand for accurate scanning',
-                    style: TextStyle( 
+                    style: TextStyle(
                       fontSize: 12,
+                      fontWeight: FontWeight.w500,
                       color: AppTheme.text,
                     ),
                   ),

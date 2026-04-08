@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Welcome Back',
-                        style: TextStyle( 
+                        style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.text,
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Identity Verification System',
-                        style: TextStyle( 
+                        style: const TextStyle(
                           fontSize: 16,
                           color: AppTheme.textSecondary,
                           fontWeight: FontWeight.w500,
@@ -48,11 +48,9 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // 🎨 Main Cards Grid
-                ModernCard(
+                _buildActionCard(
                   title: 'User Verification',
                   subtitle: 'Verify and authenticate users',
-                  icon: Icons.verified_user,
-                  gradient: AppTheme.primaryGradient,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -64,11 +62,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                ModernCard(
+                _buildActionCard(
                   title: 'Admin Panel',
                   subtitle: 'Manage credentials and issuers',
-                  icon: Icons.admin_panel_settings,
-                  gradient: AppTheme.successGradient,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -80,11 +76,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                ModernCard(
+                _buildActionCard(
                   title: 'Scan QR Code',
                   subtitle: 'Quick verification using QR',
-                  icon: Icons.qr_code_scanner,
-                  gradient: AppTheme.sunset,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -127,6 +121,57 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionCard({
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primary.withOpacity(0.15),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: AppTheme.border,
+            width: 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.text,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppTheme.textSecondary,
+                ),
+              ),
+            ],
           ),
         ),
       ),

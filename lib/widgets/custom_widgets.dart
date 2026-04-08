@@ -28,11 +28,11 @@ class ModernCard extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: gradient ?? AppTheme.primaryGradient,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: AppTheme.primary.withOpacity(0.3),
+              color: Color(0x1F000000),
               blurRadius: 16,
-              offset: const Offset(0, 8),
+              offset: Offset(0, 8),
             ),
           ],
         ),
@@ -61,19 +61,21 @@ class ModernCard extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     title,
-                    style: TextStyle( 
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
+                      inherit: true,
                     ),
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 8),
                     Text(
                       subtitle!,
-                      style: TextStyle( 
+                      style: TextStyle(
                         fontSize: 14,
                         color: Colors.white.withOpacity(0.9),
+                        inherit: true,
                       ),
                     ),
                   ],
