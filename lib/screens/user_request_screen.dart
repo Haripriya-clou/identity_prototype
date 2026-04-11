@@ -15,7 +15,9 @@ class UserRequestScreen extends StatefulWidget {
 class _UserRequestScreenState extends State<UserRequestScreen> {
   String selectedType = "Aadhar";
   final idController = TextEditingController();
+  final encryptedController = TextEditingController();
   bool isLoading = false;
+  bool useEncryptedText = false;
 
   final types = ["Aadhar", "PAN", "DL"];
 
@@ -36,17 +38,25 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
 
     final box = Hive.box('users');
 
-    final data = box.values.firstWhere(
-      (e) => e['idNumber'] == idController.text && e['idType'] == selectedType,
-      orElse: () => null,
-    );
+    dynamic data;
+    if (useEncryptedText) {
+      data = box.values.firstWhere(
+        (e) => e['encryptedText'] == encryptedController.text,
+        orElse: () => null,
+      );
+    } else {
+      data = box.values.firstWhere(
+        (e) => e['idNumber'] == idController.text && e['idType'] == selectedType,
+        orElse: () => null,
+      );
+    }
 
     setState(() => isLoading = false);
 
     if (data == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text("User not found. Please check the ID number and type."),
+          content: const Text("User not found. Please check the details."),
           backgroundColor: AppTheme.error,
         ),
       );
@@ -90,7 +100,7 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Enter the user details to retrieve their verification QR code',
+                  'Enter the user details or encrypted text to retrieve their verification QR code',
                   style: TextStyle(
                     fontSize: 12,
                     color: AppTheme.textSecondary,
@@ -101,6 +111,48 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
           ),
 
           const SizedBox(height: 28),
+
+          // Mode Toggle
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.border),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Search by:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.text,
+                  ),
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Radio<bool>(
+                      value: false,
+                      groupValue: useEncryptedText,
+                      onChanged: (v) => setState(() => useEncryptedText = v!),
+                    ),
+                    Text('ID Details', style: TextStyle(color: AppTheme.text)),
+                    const SizedBox(width: 16),
+                    Radio<bool>(
+                      value: true,
+                      groupValue: useEncryptedText,
+                      onChanged: (v) => setState(() => useEncryptedText = v!),
+                    ),
+                    Text('Encrypted Text', style: TextStyle(color: AppTheme.text)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
 
           // Input Form
           Container(
@@ -122,55 +174,65 @@ class _UserRequestScreenState extends State<UserRequestScreen> {
             ),
             child: Column(
               children: [
-                // ID Type Selection
-                DropdownButtonFormField<String>(
-                  value: selectedType,
-                  decoration: InputDecoration(
-                    labelText: "ID Type",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                if (!useEncryptedText) ...[
+                  // ID Type Selection
+                  DropdownButtonFormField<String>(
+                    value: selectedType,
+                    decoration: InputDecoration(
+                      labelText: "ID Type",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    items: types
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            ))
+                        .toList(),
+                    onChanged: (v) {
+                      setState(() => selectedType = v!);
+                      idController.clear();
+                    },
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // Help Text
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      getRule(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.secondary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                  items: types
-                      .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
-                      .toList(),
-                  onChanged: (v) {
-                    setState(() => selectedType = v!);
-                    idController.clear();
-                  },
-                ),
 
-                const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
-                // Help Text
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.secondary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                  // ID Number Input
+                  BeautifulTextField(
+                    label: "$selectedType Number",
+                    controller: idController,
+                    hintText: getPlaceholder(),
+                    keyboardType: TextInputType.text,
                   ),
-                  child: Text(
-                    getRule(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.secondary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ] else ...[
+                  // Encrypted Text Input
+                  BeautifulTextField(
+                    label: "Encrypted Text",
+                    controller: encryptedController,
+                    hintText: "Enter the encrypted recovery text",
+                    keyboardType: TextInputType.text,
                   ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ID Number Input
-                BeautifulTextField(
-                  label: "$selectedType Number",
-                  controller: idController,
-                  hintText: getPlaceholder(),
-                  keyboardType: TextInputType.text,
-                ),
+                ],
 
                 const SizedBox(height: 24),
 

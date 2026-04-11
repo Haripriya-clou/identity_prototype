@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/sync_services.dart';
 import '../utils/hash_helper.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/custom_widgets.dart';
@@ -16,10 +17,18 @@ class IssuerScreen extends StatefulWidget {
 class _IssuerScreenState extends State<IssuerScreen> {
   final name = TextEditingController();
   final id = TextEditingController();
+  final dob = TextEditingController();
+  final father = TextEditingController();
+  final mother = TextEditingController();
+  final address = TextEditingController();
+  final job = TextEditingController();
+  final blood = TextEditingController();
+  final phone = TextEditingController();
   String type = "Aadhar";
   bool isLoading = false;
 
   final types = ["Aadhar", "PAN", "DL"];
+  final bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
   bool validate(String id) {
     if (type == "Aadhar") return RegExp(r'^[0-9]{12}$').hasMatch(id);
@@ -28,14 +37,30 @@ class _IssuerScreenState extends State<IssuerScreen> {
   }
 
   Future<void> syncFirebase() async {
-    final box = Hive.box('users');
-    final snap = await FirebaseFirestore.instance.collection('users').get();
+    setState(() => isLoading = true);
+    try {
+      final box = Hive.box('users');
+      final snap = await FirebaseFirestore.instance.collection('users').get();
 
-    for (var doc in snap.docs) {
-      box.put(doc.id, doc.data());
+      for (var doc in snap.docs) {
+        final data = doc.data();
+        data['synced'] = true; // Mark as synced
+        box.put(doc.id, data);
+      }
+
+      // Sync local to Firebase
+      await syncLocalToFirebase();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sync completed!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sync error: $e')),
+      );
+    } finally {
+      setState(() => isLoading = false);
     }
-
-    setState(() {});
   }
 
   Future<void> add() async {
@@ -53,12 +78,22 @@ class _IssuerScreenState extends State<IssuerScreen> {
 
     try {
       final qr = HashHelper.generateQR(id.text, type);
+      final encryptedText = HashHelper.generateEncryptedText(id.text, type);
 
       final data = {
         "name": name.text,
         "idNumber": id.text,
         "idType": type,
         "qr": qr,
+        "encryptedText": encryptedText,
+        "dob": dob.text,
+        "father": father.text,
+        "mother": mother.text,
+        "address": address.text,
+        "job": job.text,
+        "blood": blood.text,
+        "phone": phone.text,
+        "synced": true,
       };
 
       final box = Hive.box('users');
@@ -67,6 +102,13 @@ class _IssuerScreenState extends State<IssuerScreen> {
 
       name.clear();
       id.clear();
+      dob.clear();
+      father.clear();
+      mother.clear();
+      address.clear();
+      job.clear();
+      blood.clear();
+      phone.clear();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -212,6 +254,85 @@ class _IssuerScreenState extends State<IssuerScreen> {
                           ? "PAN format"
                           : "16-digit number",
                   keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // DOB Input
+                BeautifulTextField(
+                  label: "Date of Birth",
+                  controller: dob,
+                  hintText: "DD-MM-YYYY",
+                  keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Father Name
+                BeautifulTextField(
+                  label: "Father's Name",
+                  controller: father,
+                  hintText: "Enter father's name",
+                  keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Mother Name
+                BeautifulTextField(
+                  label: "Mother's Name",
+                  controller: mother,
+                  hintText: "Enter mother's name",
+                  keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Address
+                BeautifulTextField(
+                  label: "Address",
+                  controller: address,
+                  hintText: "Enter full address",
+                  keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Job
+                BeautifulTextField(
+                  label: "Job/Profession",
+                  controller: job,
+                  hintText: "Enter job title",
+                  keyboardType: TextInputType.text,
+                ),
+
+                const SizedBox(height: 16),
+
+                // Blood Group
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Blood Group",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items: bloodGroups
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ))
+                      .toList(),
+                  onChanged: (v) => setState(() => blood.text = v!),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Phone Number
+                BeautifulTextField(
+                  label: "Phone Number",
+                  controller: phone,
+                  hintText: "Enter phone number",
+                  keyboardType: TextInputType.phone,
                 ),
 
                 const SizedBox(height: 20),
